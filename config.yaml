@@ -1,6 +1,22 @@
-unet:
-  in_channels: 3                      # Number of input channels (e.g., for RGB image)
-  out_channels: 3                     # Number of output channels (e.g., for binary segmentation)
-  conv_channels: [64, 128, 256, 512]  # Number of channels in each convolutional layer
-  kernel_size: 3                      # Kernel size for convolutional layers
-  padding: 1                          # Padding size for convolutional layers
+reproduce:
+  seed: 42
+
+image:
+  width: 128    # resize to small picture
+  height: 128   # resize to small picture
+
+dip:
+  backbone_name: "unet"
+  num_steps: 200
+  optimizer: "Adam"
+  learning_rate: 0.01
+  device: "cpu"
+  num_snapshots: 9
+
+ddpm:
+  backbone: "unet"
+  epochs: 100
+
+pre-ddpm:
+  backbone: "unet"
+  epochs: 100
