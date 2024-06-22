@@ -5,7 +5,7 @@ Pre-DDPM: Exploiting Deep Image Prior for Boosted Sampling Efficiency in Denoisi
 ### Install Dependencies
 ### Download dataset
 ```bash
-./scripts/download_data.sh
+./download_data.sh
 ```
 
 
