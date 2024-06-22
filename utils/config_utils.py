@@ -31,3 +31,9 @@ def load_dip_config(path):
 def load_img_config(path):
     configs = __load_config(path)
     return configs["image"]["height"], configs["image"]["width"] 
+
+def load_ddpm_config(path):
+    configs = __load_config(path)
+    ddpm_config = configs['ddpm']
+    ddpm_config["seed"] = configs["reproduce"]["seed"]
+    return ddpm_config

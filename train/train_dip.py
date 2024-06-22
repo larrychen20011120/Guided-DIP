@@ -14,7 +14,7 @@ sys.path.append(PROJECT_ROOT)
 
 from models.model import DIP
 from utils.config_utils import load_dip_config, load_img_config
-from utils.data_utils import pillow2image, load_image_to_tensor
+from utils.image_utils import pillow2image, load_image_to_tensor
 from utils.plot_utils import plot_single_image, plot_snapshots
 
 def train_dip(model, target_image, **config):
@@ -22,7 +22,6 @@ def train_dip(model, target_image, **config):
     # load parameters
     lr = config["learning_rate"]
     device = torch.device("cuda") if config["device"] == "cuda" and torch.cuda.is_available() else torch.device("cpu")
-    seed = config["seed"]
     num_steps = config["num_steps"]
     num_snapshots = config["num_snapshots"]
 
@@ -74,4 +73,4 @@ if __name__ == "__main__":
     print(model)
 
     snapshots = train_dip(model, target_image, **config)
-    plot_snapshots(snapshots, plot_method="store", store_dir=os.path.join(PROJECT_ROOT, "assets"))
+    plot_snapshots(snapshots, plot_method="store", store_dir="assets", filename="test_for_dip")

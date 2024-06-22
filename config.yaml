@@ -14,9 +14,6 @@ dip:
   num_snapshots: 9
 
 ddpm:
-  backbone: "unet"
-  epochs: 100
-
-pre-ddpm:
-  backbone: "unet"
-  epochs: 100
+  beta_start: 0.0001
+  beta_end:  0.02
+  num_time_steps: 1000
