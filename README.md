@@ -1,9 +1,22 @@
-# Pre-DDPM
-Pre-DDPM: Exploiting Deep Image Prior for Boosted Sampling Efficiency in Denoising Diffusion Probabilistic Models
+# Guided-DIP
+Guiding DIP Early Stopping with DDPM-inspired Supervision
 
 ## How to start the code
 ### Install Dependencies
+```
+pip install -r requirements.txt
+```
 ### Download dataset
+* First, you should copy the `.env.example` to `.env`
+```
+cp .env.example .env
+```
+* Next, replace the your kaggle token to the following two lines
+```
+KAGGLE_USERNAME="your user name in kaggle"
+KAGGLE_KEY="your api key in kaggle"
+```
+* Then, run the following shell script. It will download the image from kaggle dataset
 ```bash
 ./download_data.sh
 ```
