@@ -12,12 +12,12 @@ DATA_ENTRY = str(os.getenv("DATA_ENTRY"))
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(PROJECT_ROOT)
 
-from models.model import DIP, DDPM
+from models.model import DIP
 from utils.config_utils import load_dip_config, load_img_config
-from utils.image_utils import pillow2image, load_image_to_tensor
-from utils.plot_utils import plot_single_image, plot_snapshots
+from utils.image_utils import pillow2image, load_image_to_tensor, compute_psnr_score
+from utils.plot_utils import plot_snapshots
 
-def train_dip(model, target_image, **config):
+def train_dip(model, target_image, clean_image=None, **config):
 
     # load parameters
     lr = config["learning_rate"]
@@ -26,7 +26,7 @@ def train_dip(model, target_image, **config):
     num_snapshots = config["num_snapshots"]
 
 
-    losses, snapshots = [], []
+    losses, snapshots, psnrs = [], [], []
     snapshot_step = num_steps // num_snapshots
 
     model = model.to(device)
@@ -48,6 +48,15 @@ def train_dip(model, target_image, **config):
         loss.backward()
         optimizer.step()
 
+        if clean_image is not None:
+            with torch.no_grad():
+                psnrs.append(
+                    compute_psnr_score(
+                        pillow2image(clean_image[0].permute(1,2,0)), 
+                        pillow2image(output.cpu().detach()[0].permute(1,2,0))    
+                    )
+                )
+
         if (step+1) % snapshot_step == 0:
             model.eval()
             with torch.no_grad():
@@ -57,7 +66,7 @@ def train_dip(model, target_image, **config):
             image = pillow2image(output)
             snapshots.append( image )
         
-    return snapshots
+    return snapshots, psnrs
 
 
 
@@ -69,8 +78,8 @@ if __name__ == "__main__":
     image_path = os.path.join(DATA_ENTRY, "Image_1.jpg")
 
     target_image = load_image_to_tensor(image_path, height, width)
-    model = DIP()
+    model = DIP(config["backbone_name"])
     print(model)
 
     snapshots = train_dip(model, target_image, **config)
-    plot_snapshots(snapshots, row_count=3, plot_method="store", store_dir="assets", filename="test_for_dip")
+    plot_snapshots(snapshots, plot_method="store", store_dir="assets", filename="test_for_dip")

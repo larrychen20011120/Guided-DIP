@@ -10,12 +10,18 @@ DATA_ENTRY = str(os.getenv("DATA_ENTRY"))
 # in order to import other files
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(PROJECT_ROOT)
-from models.backbone import UNet
+from models.backbone import UNet, SegNet
 
 class DIP(nn.Module):
-    def __init__(self, **config):
+    def __init__(self, backbone_name):
         super(DIP, self).__init__()
-        self.backbone = UNet(**config)
+        if backbone_name == "unet":
+            self.backbone = UNet()
+        elif backbone_name == "segnet":
+            self.backbone = SegNet()
+        else:
+            print(f"You can use th backbone {backbone_name} !!!")
+            exit(1)
         
     def forward(self, x):
         return self.backbone(x)
@@ -29,8 +35,10 @@ class DDPM:
 
     def forward_diffusion(self, x_start, t):
         noise = torch.randn_like(x_start)
-        noise = noise * 0.5 + 0.5  # Optional: Comment this line out to use standard noise
+        # normalize gaussian to (0, 1)
+        noise = noise * 0.5 + 0.5  
         alpha_bar_t = self.alpha_bars[t]
+        # weighted sum of noise the original image
         x_t = torch.sqrt(alpha_bar_t) * x_start + torch.sqrt(1 - alpha_bar_t) * noise
         return x_t, noise
 
@@ -49,7 +57,7 @@ if __name__ == "__main__":
 
     target_image = load_image_to_tensor(image_path, height, width)
     diffusion = DDPM(**config)
-    t = 100 #torch.tensor([100])
+    t = 100 
     
     print(f"Start adding noise to the target image in {image_path}...")
     noisy_image, _ = diffusion.forward_diffusion(target_image, t)

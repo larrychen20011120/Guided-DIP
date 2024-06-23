@@ -37,3 +37,10 @@ def load_ddpm_config(path):
     ddpm_config = configs['ddpm']
     ddpm_config["seed"] = configs["reproduce"]["seed"]
     return ddpm_config
+
+def load_guide_dip_config(path):
+    configs = __load_config(path)
+    guide_dip_config = configs['guide-dip']
+    guide_dip_config["seed"] = configs["reproduce"]["seed"]
+    return guide_dip_config
+

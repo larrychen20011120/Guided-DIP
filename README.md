@@ -11,7 +11,7 @@ pip install -r requirements.txt
 ```
 cp .env.example .env
 ```
-* Next, replace the your kaggle token to the following two lines
+* Next, replace the your kaggle token to the following two lines in the `.env` file
 ```
 KAGGLE_USERNAME="your user name in kaggle"
 KAGGLE_KEY="your api key in kaggle"
@@ -25,4 +25,5 @@ KAGGLE_KEY="your api key in kaggle"
 ## Acknowledgements 
 * [PyTorch Deep Image Prior] (https://github.com/safwankdb/Deep-Image-Prior)
 * [DDPM from scratch in Pytorch] (https://www.kaggle.com/code/vikramsandu/ddpm-from-scratch-in-pytorch)
+* [SegNet Pytorch](https://github.com/vinceecws/SegNet_PyTorch/tree/master)
 * [chatGPT] (https://chatgpt.com/)

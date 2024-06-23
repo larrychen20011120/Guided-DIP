@@ -7,7 +7,7 @@ image:
 
 dip:
   backbone_name: "unet"
-  num_steps: 200
+  num_steps: 1000
   optimizer: "Adam"
   learning_rate: 0.01
   device: "cpu"
@@ -17,3 +17,9 @@ ddpm:
   beta_start: 0.0001
   beta_end:  0.02
   num_time_steps: 1000
+
+guide-dip:
+  count: 20
+  start_t: 500
+  end_t: 40
+  num_steps: 500
