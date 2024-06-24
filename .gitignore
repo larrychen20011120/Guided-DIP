@@ -4,4 +4,10 @@ __pycache__
 .venv
 
 # ignore dataset
-data/*
+data/train/
+data/test/
+data/*.csv
+
+!data/test/Image_1.jpg
+!data/test/Image_2.jpg
+!data/test/Image_3.jpg

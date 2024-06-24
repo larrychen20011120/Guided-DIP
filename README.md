@@ -6,12 +6,16 @@ Guiding DIP Early Stopping with DDPM-inspired Supervision
 ```
 pip install -r requirements.txt
 ```
-### Download dataset
-* First, you should copy the `.env.example` to `.env`
+### create the .env file
+First, you should copy the `.env.example` to `.env`
 ```
 cp .env.example .env
 ```
-* Next, replace the your kaggle token to the following two lines in the `.env` file
+### Download dataset if you need it
+```
+if you just want to reproduce the result, you can **run it with the cases in data directory** without installing any files
+```
+* replace the your kaggle token to the following two lines in the `.env` file
 ```
 KAGGLE_USERNAME="your user name in kaggle"
 KAGGLE_KEY="your api key in kaggle"
@@ -23,7 +27,7 @@ KAGGLE_KEY="your api key in kaggle"
 
 
 ## Acknowledgements 
-* [PyTorch Deep Image Prior] (https://github.com/safwankdb/Deep-Image-Prior)
-* [DDPM from scratch in Pytorch] (https://www.kaggle.com/code/vikramsandu/ddpm-from-scratch-in-pytorch)
+* [PyTorch Deep Image Prior](https://github.com/safwankdb/Deep-Image-Prior)
+* [DDPM from scratch in Pytorch](https://www.kaggle.com/code/vikramsandu/ddpm-from-scratch-in-pytorch)
 * [SegNet Pytorch](https://github.com/vinceecws/SegNet_PyTorch/tree/master)
-* [chatGPT] (https://chatgpt.com/)
+* [chatGPT](https://chatgpt.com/)
