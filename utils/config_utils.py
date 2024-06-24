@@ -3,7 +3,7 @@ from torch.optim import Adam, SGD
 
 
 ################# private functions ##################
-### parse optimizer name to object
+
 def __parse_optimizer(optimizer_name="Adam"):
     if optimizer_name == "Adam":
         return Adam
@@ -42,5 +42,5 @@ def load_guide_dip_config(path):
     configs = __load_config(path)
     guide_dip_config = configs['guide-dip']
     guide_dip_config["seed"] = configs["reproduce"]["seed"]
+    guide_dip_config["optimizer"] = __parse_optimizer(guide_dip_config["optimizer"])
     return guide_dip_config
-

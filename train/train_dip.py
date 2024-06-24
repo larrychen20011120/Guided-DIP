@@ -26,7 +26,9 @@ def train_dip(model, target_image, clean_image=None, **config):
     num_snapshots = config["num_snapshots"]
 
 
-    losses, snapshots, psnrs = [], [], []
+    losses, snapshots = [], []
+    psnrs = []
+
     snapshot_step = num_steps // num_snapshots
 
     model = model.to(device)
@@ -57,7 +59,7 @@ def train_dip(model, target_image, clean_image=None, **config):
                     )
                 )
 
-        if (step+1) % snapshot_step == 0:
+        if snapshot_step != 0 and (step+1) % snapshot_step == 0:
             model.eval()
             with torch.no_grad():
                 output = model(noise).cpu().detach()[0].permute(1,2,0)
@@ -66,8 +68,7 @@ def train_dip(model, target_image, clean_image=None, **config):
             image = pillow2image(output)
             snapshots.append( image )
         
-    return snapshots, psnrs
-
+    return losses, snapshots, psnrs
 
 
 if __name__ == "__main__":

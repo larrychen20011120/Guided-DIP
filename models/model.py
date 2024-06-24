@@ -12,6 +12,19 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(PROJECT_ROOT)
 from models.backbone import UNet, SegNet
 
+def cosine_schedule(num_timesteps, s=0.008):
+    def f(t):
+        return torch.cos((t / num_timesteps + s) / (1 + s) * 0.5 * torch.pi) ** 2
+    x = torch.linspace(0, num_timesteps, num_timesteps + 1)
+    alphas_cumprod = f(x) / f(torch.tensor([0]))
+    betas = 1 - alphas_cumprod[1:] / alphas_cumprod[:-1]
+    betas = torch.clip(betas, 0.0001, 0.999)
+    return betas
+
+def linear_schedule(beta_start, beta_end, num_timesteps):
+    betas = torch.linspace(beta_start, beta_end, num_timesteps)
+    return betas
+
 class DIP(nn.Module):
     def __init__(self, backbone_name):
         super(DIP, self).__init__()
@@ -29,7 +42,16 @@ class DIP(nn.Module):
 class DDPM:
     def __init__(self, **config):
         super(DDPM, self).__init__()
-        self.betas = torch.linspace(config["beta_start"], config["beta_end"], config["num_time_steps"])
+
+        if config["scheduler"] == "linear":
+            self.betas = linear_schedule(config["beta_start"], config["beta_end"], config["num_time_steps"])
+        elif config["scheduler"] == "linear":
+            self.betas = cosine_schedule(config["num_time_steps"])
+            
+        else:
+            print(f"Do not support the scheduler {config["scheduler"]}")
+            exit(1)
+
         self.alphas = 1 - self.betas
         self.alpha_bars = torch.cumprod(self.alphas, dim=0)
 
