@@ -5,7 +5,3 @@ __pycache__
 
 # ignore dataset
 data/*
-# track some samples
-!data/test/Image_1.jpg
-!data/test/Image_2.jpg
-!data/test/Image_3.jpg
