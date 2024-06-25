@@ -49,7 +49,7 @@ class DDPM:
             self.betas = cosine_schedule(config["num_time_steps"])
             
         else:
-            print(f"Do not support the scheduler {config["scheduler"]}")
+            print(f"Do not support the scheduler {config['scheduler']}")
             exit(1)
 
         self.alphas = 1 - self.betas

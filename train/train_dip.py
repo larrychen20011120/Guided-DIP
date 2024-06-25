@@ -2,7 +2,7 @@ import os
 import sys
 import torch 
 from torch.autograd import Variable
-from tqdm import tqdm
+from tqdm.auto import tqdm
 from dotenv import load_dotenv
 
 load_dotenv()
