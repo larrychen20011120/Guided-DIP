@@ -23,13 +23,13 @@ def train_dip(model, target_image, clean_image=None, **config):
     lr = config["learning_rate"]
     device = torch.device("cuda") if config["device"] == "cuda" and torch.cuda.is_available() else torch.device("cpu")
     num_steps = config["num_steps"]
-    num_snapshots = config["num_snapshots"]
 
 
     losses, snapshots = [], []
     psnrs = []
 
-    snapshot_step = num_steps // num_snapshots
+    if clean_image is not None:
+        clean_np_image = pillow2image(clean_image[0].permute(1,2,0))
 
     model = model.to(device)
     optimizer = config["optimizer"](model.parameters(), lr=lr)
@@ -39,10 +39,11 @@ def train_dip(model, target_image, clean_image=None, **config):
     noise = Variable(torch.randn(target_image.shape))
     noise = noise.to(device)
 
-    # start training
-    model.train()
 
-    for step in tqdm(range(num_steps)):
+    for _ in tqdm(range(num_steps)):
+        # start training
+        model.train()
+
         optimizer.zero_grad()
         output = model(noise)
         loss = mse(target_image, output)
@@ -50,23 +51,25 @@ def train_dip(model, target_image, clean_image=None, **config):
         loss.backward()
         optimizer.step()
 
-        if clean_image is not None:
-            with torch.no_grad():
-                psnrs.append(
-                    compute_psnr_score(
-                        pillow2image(clean_image[0].permute(1,2,0)), 
-                        pillow2image(output.cpu().detach()[0].permute(1,2,0))    
-                    )
-                )
 
-        if snapshot_step != 0 and (step+1) % snapshot_step == 0:
-            model.eval()
-            with torch.no_grad():
-                output = model(noise).cpu().detach()[0].permute(1,2,0)
-
-            # store the snapshot
+        model.eval()
+        with torch.no_grad():
+            output = model(noise).cpu().detach()[0].permute(1,2,0)
             image = pillow2image(output)
             snapshots.append( image )
+
+        if clean_image is not None:
+            psnrs.append(
+                compute_psnr_score(
+                    clean_np_image, 
+                    image
+                )
+            )
+
+            
+
+            # store the snapshot
+            
         
     return losses, snapshots, psnrs
 

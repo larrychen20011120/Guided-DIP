@@ -3,8 +3,13 @@ Guiding DIP Early Stopping with DDPM-inspired Supervision
 
 ## How to start the code
 ### Install Dependencies
+* running on your local device
 ```
 pip install -r requirements.txt
+```
+* running in colab
+```
+pip install python-dotenv
 ```
 ### create the .env file
 First, you should copy the `.env.example` to `.env`
@@ -13,7 +18,7 @@ cp .env.example .env
 ```
 ### Download dataset if you need it
 ```
-if you just want to reproduce the result, you can **run it with the cases in data directory** without installing any files
+I recommend you run the code with the images in data/test directory without installing any files first.
 ```
 * replace the your kaggle token to the following two lines in the `.env` file
 ```
@@ -24,6 +29,14 @@ KAGGLE_KEY="your api key in kaggle"
 ```bash
 ./download_data.sh
 ```
+### Notebook details
+* test.ipynb is the demonstration of simple DDPM diffusion forward process and DIP training process on the clean image
+* main.ipynb is the notebook for running the Guided-DIP and DIP on noisy image
+
+## How to run with different experiments
+* all the settings of dip, ddpm and guided-dip can be altered by rewriting the `config.yaml`, you should follow the `models.model.py` configuration parsing for details.
+* Here, I show some changes you can try to rewrite 
+
 
 
 ## Acknowledgements 

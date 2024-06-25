@@ -7,11 +7,10 @@ image:
 
 dip:
   backbone_name: "unet"
-  num_steps: 500
+  num_steps: 300
   optimizer: "Adam"
   learning_rate: 0.001
   device: "cpu"
-  num_snapshots: 9
 
 ddpm:
   scheduler: "linear"
@@ -21,11 +20,10 @@ ddpm:
 
 guide-dip:
   count: 10
-  start_t: 500
+  start_t: 300
   end_t: 40
-  num_steps: 500
+  num_steps: 800
   backbone_name: "unet"
   optimizer: "Adam"
   learning_rate: 0.001
   device: "cpu"
-  num_snapshots: 9
