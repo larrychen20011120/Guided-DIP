@@ -45,7 +45,7 @@ class DDPM:
 
         if config["scheduler"] == "linear":
             self.betas = linear_schedule(config["beta_start"], config["beta_end"], config["num_time_steps"])
-        elif config["scheduler"] == "linear":
+        elif config["scheduler"] == "cosine":
             self.betas = cosine_schedule(config["num_time_steps"])
             
         else:
